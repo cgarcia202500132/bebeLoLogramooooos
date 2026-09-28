@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invitación a Lo Desconocido | Más allá del Jardín</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts for Vintage Autumn Vibe -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=IM+Fell+English+SC&family=Patrick+Hand&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --dark-green: #0d180f;
+      --deep-forest: #162619;
+      --wood-border: #2e1d13;
+      --gold-accent: #d4af37;
+      --parchment: #f4ebd9;
+      --pumpkin-orange: #d96b27;
+      --crimson-red: #8c2d19;
+    }
+
+    body {
+      background-color: var(--dark-green);
+      color: #3b2c20;
+      font-family: 'Georgia', serif;
+      overflow-x: hidden;
+      user-select: none;
+    }
+
+    .font-title {
+      font-family: 'IM Fell English SC', serif;
+    }
+    .font-gothic {
+      font-family: 'Cinzel', serif;
+    }
+    .font-hand {
+      font-family: 'Patrick Hand', cursive;
+    }
+
+    /* Falling Leaves CSS Animation */
+    .leaf {
+      position: absolute;
+      top: -50px;
+      pointer-events: none;
+      animation: fall linear infinite;
+      z-index: 10;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(0deg) translateX(0);
+        opacity: 1;
+      }
+      50% {
+        transform: translateY(50vh) rotate(180deg) translateX(50px);
+      }
+      100% {
+        transform: translateY(105vh) rotate(360deg) translateX(-30px);
+        opacity: 0.25;
+      }
+    }
+
+    /* Wood Frame and Parchment Effect */
+    .wood-frame {
+      background: #1e130c;
+      border: 12px solid #2e1d13;
+      box-shadow: 0 0 25px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,0,0,0.9);
+      border-image: linear-gradient(to bottom, #3d2719, #1a0f08) 1;
+    }
+
+    .parchment-bg {
+      background-color: var(--parchment);
+      background-image: 
+        radial-gradient(rgba(140, 45, 25, 0.08) 1px, transparent 0),
+        radial-gradient(rgba(43, 26, 16, 0.05) 1px, transparent 0);
+      background-size: 20px 20px;
+      background-position: 0 0, 10px 10px;
+      box-shadow: inset 0 0 40px rgba(70, 45, 25, 0.35);
+    }
+
+    /* Lantern Pulse Glow */
+    .lantern-glow {
+      filter: drop-shadow(0 0 15px rgba(255, 190, 80, 0.8));
+      animation: pulseGlow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      0% { filter: drop-shadow(0 0 10px rgba(255, 170, 50, 0.6)); transform: scale(1); }
+      100% { filter: drop-shadow(0 0 25px rgba(255, 210, 100, 0.95)); transform: scale(1.03); }
+    }
+
+    /* Button Animations */
+    .btn-yes {
+      background: linear-gradient(135deg, #2d5a27 0%, #1c3b18 100%);
+      box-shadow: 0 4px 15px rgba(45, 90, 39, 0.5), inset 0 2px 2px rgba(255,255,255,0.2);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .btn-yes:hover {
+      box-shadow: 0 6px 20px rgba(72, 145, 63, 0.8), inset 0 2px 4px rgba(255,255,255,0.4);
+      transform: translateY(-3px) scale(1.03);
+    }
+
+    /* Floating/Swaying frog animation */
+    .sway {
+      animation: gentleSway 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes gentleSway {
+      0% { transform: rotate(-3deg); }
+      100% { transform: rotate(3deg); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-3 sm:p-6 relative">
+
+  <!-- Ambient Forest Background Overlay -->
+  <div class="fixed inset-0 pointer-events-none z-0 opacity-40">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-900/20 via-emerald-950/60 to-black"></div>
+  </div>
+
+  <!-- Falling Autumn Leaves Container -->
+  <div id="leaves-container" class="fixed inset-0 pointer-events-none z-10"></div>
+
+  <!-- Ambient Audio Toggle Button -->
+  <button id="audio-toggle" onclick="toggleAudio()" class="fixed top-4 right-4 z-50 bg-[#2e1d13] text-[#d4af37] border border-[#d4af37]/40 px-3 py-2 rounded-full shadow-lg flex items-center gap-2 hover:bg-[#3d2719] transition text-sm">
+    <i id="audio-icon" class="fas fa-volume-mute"></i>
+    <span class="font-hand text-base hidden sm:inline">Música del Bosque</span>
+  </button>
+
+  <main class="relative z-20 w-full max-w-2xl wood-frame rounded-2xl p-2 sm:p-4 shadow-2xl my-auto">
+    <div class="parchment-bg rounded-xl p-5 sm:p-8 border-2 border-[#8c2d19]/30 relative overflow-hidden flex flex-col items-center text-center">
+      
+      <!-- Vintage Corner Flourishes -->
+      <div class="absolute top-2 left-2 text-[#8c2d19] opacity-60 text-xl font-gothic">🎕</div>
+      <div class="absolute top-2 right-2 text-[#8c2d19] opacity-60 text-xl font-gothic">🎕</div>
+      <div class="absolute bottom-2 left-2 text-[#8c2d19] opacity-60 text-xl font-gothic">🎕</div>
+      <div class="absolute bottom-2 right-2 text-[#8c2d19] opacity-60 text-xl font-gothic">🎕</div>
+
+      <!-- Top Header & Artwork -->
+      <div class="flex items-center justify-center gap-3 mb-2">
+        <!-- Beatrice SVG -->
+        <svg class="w-8 h-8 sm:w-10 sm:h-10 text-sky-700 sway" viewBox="0 0 100 100" fill="currentColor">
+          <path d="M20,50 Q40,20 70,30 Q90,35 95,50 Q80,55 70,70 Q40,80 20,50 Z"/>
+          <circle cx="80" cy="40" r="3" fill="#fff"/>
+          <circle cx="81" cy="40" r="1.5" fill="#000"/>
+          <path d="M95,50 L105,48 L93,56 Z" fill="#d96b27"/>
+        </svg>
+
+        <span class="font-title text-xs sm:text-sm tracking-widest text-[#8c2d19] uppercase font-bold">Un mensaje de Lo Desconocido</span>
+
+        <!-- Wirt Hat SVG -->
+        <svg class="w-8 h-8 sm:w-10 sm:h-10 text-[#8c2d19] sway" viewBox="0 0 100 100" fill="currentColor">
+          <path d="M20,80 L50,10 L80,80 Z"/>
+          <ellipse cx="50" cy="80" rx="35" ry="8" fill="#5a1c10"/>
+        </svg>
+      </div>
+
+      <h1 class="font-title text-2xl sm:text-4xl text-[#2e1d13] font-bold mb-1 tracking-wide border-b-2 border-[#d4af37]/50 pb-2 w-full">
+        ¿Aceptas ir conmigo a una date?
+      </h1>
+
+      <!-- Subtitle Quote -->
+      <p class="font-hand text-lg sm:text-xl text-[#6b4226] my-2 italic max-w-lg">
+        "Nadie sabe dónde lleva el camino, pero entre historias antiguas, misterios y canciones de ranas... prometo que la pasaremos genial."
+      </p>
+
+      <!-- Center Artwork -->
+      <div class="my-3 relative lantern-glow flex items-center justify-center">
+        <img src="https://static.wikia.nocookie.net/cartoonnetwork/images/4/43/Greg_%28M%C3%A1s_All%C3%A1_del_Jard%C3%ADn%29.png/revision/latest?cb=20191130224440&path-prefix=es" 
+             alt="Imagen Personal" 
+             class="w-36 h-36 sm:w-44 sm:h-44 object-cover rounded-full border-4 border-[#d4af37] shadow-lg">
+      </div>
+
+      <!-- Details Card (Fecha, Hora, Lugar) -->
+      <div id="details-display" class="w-full max-w-md bg-[#fcf8ef] border-2 border-dashed border-[#8c2d19]/60 rounded-lg p-3 sm:p-4 my-2 shadow-sm">
+        <div class="text-xs uppercase tracking-widest text-[#8c2d19] font-bold mb-2">✦ Detalles de la date ✦</div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-left text-sm sm:text-base">
+          <div class="flex items-center gap-2 bg-[#f2e6cf] p-2 rounded border border-[#d4af37]/40">
+            <i class="far fa-calendar-alt text-[#8c2d19]"></i>
+            <div>
+              <span class="block text-[10px] uppercase font-bold text-[#6b4226]">Fecha y Hora:</span>
+              <span id="display-date" class="font-bold text-[#2e1d13]">Domingo 18 de octubre, 12:00 PM</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 bg-[#f2e6cf] p-2 rounded border border-[#d4af37]/40">
+            <i class="fas fa-map-marker-alt text-[#8c2d19]"></i>
+            <div>
+              <span class="block text-[10px] uppercase font-bold text-[#6b4226]">Lugar:</span>
+              <span id="display-place" class="font-bold text-[#2e1d13]">Cafeteria El Circulo zona 1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons Container -->
+      <div class="mt-4 mb-2 flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-md relative min-h-[110px]" id="buttons-area">
+        <!-- YES Button -->
+        <button id="btn-yes" onclick="handleYesClick()" class="btn-yes text-white font-title text-lg sm:text-xl px-8 py-3 rounded-full border-2 border-[#d4af37] w-full sm:w-auto transform transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer z-30">
+          <span>¡Obvio Microbio!</span> 🐸✨
+        </button>
+
+        <!-- NO Button -->
+        <button id="btn-no" onmouseover="dodgeNoButton()" onclick="dodgeNoButton()" class="bg-[#8c2d19] hover:bg-[#6e2212] text-[#f4ebd9] font-title text-base sm:text-lg px-6 py-3 rounded-full border border-[#d4af37]/50 w-full sm:w-auto transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer z-20">
+          <span id="no-text">A la proxima joven...</span> 🍂
+        </button>
+      </div>
+
+      <!-- Rock Fact Note -->
+      <div id="rock-fact-banner" class="mt-2 text-xs sm:text-sm font-hand text-[#6b4226] bg-[#e8dac1] px-3 py-1 rounded-full border border-[#d4af37]/40">
+        🪨 <span id="rock-fact-text">¡Y eso es un dato de roca! (El botón "Sí" se ve más apetecible).</span>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- VICTORY MODAL (Clean Celebration Screen) -->
+  <div id="victory-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="wood-frame rounded-2xl p-2 sm:p-4 max-w-lg w-full">
+      <div class="parchment-bg rounded-xl p-6 text-center flex flex-col items-center relative border-2 border-[#d4af37]">
+        
+        <!-- Victory Icon / Frog playing music -->
+        <div class="w-24 h-24 mb-2 lantern-glow">
+          <svg viewBox="0 0 100 100" fill="none">
+            <circle cx="50" cy="50" r="45" fill="#5c9c33"/>
+            <!-- Eyes -->
+            <circle cx="35" cy="30" r="8" fill="#fff"/>
+            <circle cx="35" cy="30" r="4" fill="#000"/>
+            <circle cx="65" cy="30" r="8" fill="#fff"/>
+            <circle cx="65" cy="30" r="4" fill="#000"/>
+            <!-- Happy Mouth -->
+            <path d="M30 55 Q50 80 70 55" stroke="#1c3b18" stroke-width="4" fill="none"/>
+            <text x="15" y="30" fill="#d4af37" font-size="20">♪</text>
+            <text x="75" y="25" fill="#d4af37" font-size="24">♫</text>
+          </svg>
+        </div>
+
+        <h2 class="font-title text-2xl sm:text-3xl text-[#8c2d19] font-bold mb-2">
+          ¡SABÍA QUE DIRÍAS QUE SÍ! 🎉
+        </h2>
+
+        <p class="font-hand text-lg text-[#3b2c20] mb-4">
+          "Nos espera la expedición más grandiosa de todas por Lo Desconocido."
+        </p>
+
+        <!-- Final Summary Card -->
+        <div class="bg-[#fcf8ef] border border-[#8c2d19] rounded-lg p-4 w-full mb-4 text-left text-sm">
+          <div class="font-bold text-[#8c2d19] mb-1 uppercase tracking-wider text-xs">Cita Confirmada:</div>
+          <div class="text-[#2e1d13] font-semibold mb-1">📅 <span id="final-date">--</span></div>
+          <div class="text-[#2e1d13] font-semibold">📍 <span id="final-place">--</span></div>
+        </div>
+
+        <button onclick="closeVictoryModal()" class="w-full bg-[#2d5a27] hover:bg-[#1c3b18] text-white font-title py-2.5 px-4 rounded-xl shadow border border-[#d4af37] transition cursor-pointer">
+          ¡Nos vemos pronto! 🐸
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Elemento de Audio MP3 -->
+  <audio id="victory-audio" src="loLogramos.mp3" preload="auto"></audio>
+
+  <script>
+    let dodgeCount = 0;
+    let isAudioPlaying = false;
+    let audioCtx = null;
+
+    const rockFacts = [
+      "¡Y eso es un dato de roca! (El botón 'Sí' se ve más apetecible).",
+      "Dato de roca: Las ranas adoran las citas en el bosque.",
+      "Dato de roca: Si presionas 'No', Jason Funderburker cantará triste.",
+      "Dato de roca: El destino ya ha decidido que dirás que SÍ.",
+      "Dato de roca: Robar rocas está mal... pero decir que sí está perfecto."
+    ];
+
+    const noTexts = [
+      "No...",
+      "¿Segura? 🥺",
+      "¡Piénsalo bien!",
+      "¿De verdad? 🍂",
+      "¡Acepta el Sí! ✨"
+    ];
+
+    /* Falling Leaves Generator */
+    function createLeaves() {
+      const container = document.getElementById('leaves-container');
+      const leafColors = ['#d96b27', '#8c2d19', '#d4af37', '#6b4226', '#4a6b27'];
+      const leafCount = 18;
+
+      for (let i = 0; i < leafCount; i++) {
+        const leaf = document.createElement('div');
+        leaf.className = 'leaf';
+        
+        const size = Math.random() * 15 + 12;
+        const color = leafColors[Math.floor(Math.random() * leafColors.length)];
+        const left = Math.random() * 100;
+        const duration = Math.random() * 8 + 6;
+        const delay = Math.random() * 5;
+
+        leaf.style.left = `${left}vw`;
+        leaf.style.animationDuration = `${duration}s`;
+        leaf.style.animationDelay = `${delay}s`;
+        
+        leaf.innerHTML = `
+          <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${color}">
+            <path d="M12,2 C17,7 22,12 17,22 C12,17 7,22 2,17 C7,12 12,7 12,2 Z"/>
+          </svg>
+        `;
+
+        container.appendChild(leaf);
+      }
+    }
+
+    /* Button Dodge Logic */
+    function dodgeNoButton() {
+      dodgeCount++;
+      playDodgeSound();
+
+      const btnNo = document.getElementById('btn-no');
+      const btnYes = document.getElementById('btn-yes');
+      const noText = document.getElementById('no-text');
+      const rockFactText = document.getElementById('rock-fact-text');
+
+      noText.innerText = noTexts[Math.min(dodgeCount, noTexts.length - 1)];
+      rockFactText.innerText = rockFacts[Math.min(dodgeCount, rockFacts.length - 1)];
+
+      const scaleYes = 1 + (dodgeCount * 0.12);
+      btnYes.style.transform = `scale(${scaleYes})`;
+      btnYes.style.boxShadow = `0 0 ${15 + dodgeCount * 8}px rgba(72, 145, 63, 0.9)`;
+
+      if (dodgeCount > 0) {
+        btnNo.style.position = 'absolute';
+        const randomX = (Math.random() - 0.5) * 220;
+        const randomY = (Math.random() - 0.5) * 120;
+        btnNo.style.transform = `translate(${randomX}px, ${randomY}px) scale(${Math.max(0.5, 1 - dodgeCount * 0.08)})`;
+      }
+    }
+
+    /* Victory Click with Audio Playback */
+    function handleYesClick() {
+      const audio = document.getElementById('victory-audio');
+      if (audio) {
+        audio.currentTime = 0;
+        audio.play().catch(e => console.log("Error de reproducción de audio:", e));
+      }
+
+      const dateVal = document.getElementById('display-date').innerText;
+      const placeVal = document.getElementById('display-place').innerText;
+
+      document.getElementById('final-date').innerText = dateVal;
+      document.getElementById('final-place').innerText = placeVal;
+
+      document.getElementById('victory-modal').classList.remove('hidden');
+    }
+
+    function closeVictoryModal() {
+      document.getElementById('victory-modal').classList.add('hidden');
+    }
+
+    /* Audio Synthesizer */
+    function toggleAudio() {
+      const icon = document.getElementById('audio-icon');
+
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+
+      if (isAudioPlaying) {
+        isAudioPlaying = false;
+        icon.className = "fas fa-volume-mute";
+      } else {
+        startCozyAmbientSound();
+        isAudioPlaying = true;
+        icon.className = "fas fa-volume-up text-emerald-400";
+      }
+    }
+
+    function startCozyAmbientSound() {
+      if (!audioCtx) return;
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+
+      const notes = [220, 261.63, 329.63, 392.00, 440];
+      let noteIdx = 0;
+
+      function playNextNote() {
+        if (!isAudioPlaying) return;
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(notes[noteIdx], audioCtx.currentTime);
+
+        gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 0.5);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + 2.6);
+
+        noteIdx = (noteIdx + 1) % notes.length;
+        setTimeout(playNextNote, 2200);
+      }
+
+      playNextNote();
+    }
+
+    function playDodgeSound() {
+      if (!audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.15);
+        
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.15);
+      } catch(e){}
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      createLeaves();
+    });
+  </script>
+</body>
+</html>
